@@ -1,4 +1,5 @@
 RSpec.describe OmniAuth::Strategies::Impexium do
+  let(:log) { double }
   let(:options) do
     {
       client_options: {
@@ -18,6 +19,11 @@ RSpec.describe OmniAuth::Strategies::Impexium do
   end
 
   subject { described_class.new('app_id', 'secret', options) }
+
+  before do
+    allow(@app_event).to receive(:logs).and_return(log)
+    allow(log).to receive(:create).and_return(true)
+  end
 
   describe '#options' do
     describe '#name' do

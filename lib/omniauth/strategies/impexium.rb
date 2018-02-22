@@ -27,11 +27,15 @@ module OmniAuth
       end
 
       def callback_phase
+        account = Account.find_by(slug: account_slug)
+        @app_event = account.app_events.create(activity_type: 'sso')
+
         self.user_id = request.params['UserId']
         self.sso_token = request.params['sso']
         authenticate
         self.env['omniauth.auth'] = auth_hash
         self.env['omniauth.origin'] = '/' + request.params['slug']
+        finalize_app_event
         call_app!
       end
 
@@ -58,20 +62,41 @@ module OmniAuth
           request.headers['Content-Type'] = 'application/json'
           request.body = app_request_body
         end
-        return fail!(:invalid_credentials) unless app_response.success?
 
-        credentials = to_json(app_response.body)
-        auth_response = Faraday.post(credentials[:uri]) do |request|
-          request.headers['Content-Type'] = 'application/json'
-          request.headers['AccessToken'] = credentials[:accessToken]
-          request.body = auth_request_body
+        app_request_log = "[Impexium] Authenticate App Request:\nPOST #{options.client_options.site}\nRequest body: #{app_request_body}"
+        @app_event.logs.create(level: 'info', text: app_request_log)
+
+        if app_response.success?
+          app_response_log = "[Impexium] Authenticate App Response (code: #{app_response.status}):\n#{app_response.inspect}"
+          @app_event.logs.create(level: 'info', text: app_response_log)
+
+          credentials = to_json(app_response.body)
+          auth_response = Faraday.post(credentials[:uri]) do |request|
+            request.headers['Content-Type'] = 'application/json'
+            request.headers['AccessToken'] = credentials[:accessToken]
+            request.body = auth_request_body
+          end
+          auth_request_log = "[Impexium] Authenticate Request:\nPOST #{credentials[:uri]}\nRequest body: #{auth_request_body}"
+          @app_event.logs.create(level: 'info', text: auth_request_log)
+
+          if auth_response.success?
+            auth_response_log = "[Impexium] Authenticate Response (code: #{auth_response.status}):\n#{auth_response.inspect}"
+            @app_event.logs.create(level: 'info', text: auth_response_log)
+
+            data = to_json(auth_response.body)
+            self.app_token = data[:appToken]
+            self.user_token = data[:userToken]
+            self.endpoint_base_url = parse_endpoint_base_url(data[:uri])
+          else
+            @app_event.logs.create(level: 'error', text: auth_response_log)
+            @app_event.fail!
+            fail!(:invalid_credentials)
+          end
+        else
+          @app_event.logs.create(level: 'error', text: app_response_log)
+          @app_event.fail!
+          fail!(:invalid_credentials)
         end
-        return fail!(:invalid_credentials) unless auth_response.success?
-
-        data = to_json(auth_response.body)
-        self.app_token = data[:appToken]
-        self.user_token = data[:userToken]
-        self.endpoint_base_url = parse_endpoint_base_url(data[:uri])
       end
 
       def app_request_body
@@ -102,28 +127,46 @@ module OmniAuth
       def raw_user_info
         return @user_info if defined?(@user_info)
 
+        request_log = "[Impexium] Profile Request:\nGET #{endpoint_base_url}/api/v1/Individuals/Profile/#{user_id}/1"
+        @app_event.logs.create(level: 'info', text: request_log)
+
         response = connection.get("/api/v1/Individuals/Profile/#{user_id}/1") do |request|
           request.headers['UserToken'] = sso_token
         end
-        return fail!(:invalid_credentials) unless response.success?
+        if response.success?
+          response_log = "[Impexium] Profile Response (code: #{response.status}):\n#{response.inspect}"
+          @app_event.logs.create(level: 'info', text: response_log)
 
-        data = to_json(response.body)[:dataList].first
-        @user_info = {
-          uid: data[:id],
-          first_name: data[:firstName],
-          last_name: data[:lastName],
-          email: data[:email]
-        }
-        @user_info[:access_codes] = access_codes if options.client_options.sync_event_codes
-        @user_info
+          data = to_json(response.body)[:dataList].first
+          @user_info = {
+            uid: data[:id],
+            first_name: data[:firstName],
+            last_name: data[:lastName],
+            email: data[:email]
+          }
+          @user_info[:access_codes] = access_codes if options.client_options.sync_event_codes
+          @user_info
+        else
+          @app_event.logs.create(level: 'error', text: response_log)
+          @app_event.fail!
+          fail!(:invalid_credentials)
+        end
+
       end
 
       def registrations_per_page(page)
-        response = connection.get("/api/v1/Individuals/#{user_id}/Registrations/#{page}")
-        return [] unless response.success?
+        request_log = "[Impexium] Registrations Request:\nGET #{endpoint_base_url}/api/v1/Individuals/#{user_id}/Registrations/#{page}"
+        @app_event.logs.create(level: 'info', text: request_log)
 
-        data = to_json(response.body)
-        data[:dataList].map { |item| item[:event][:code] }
+        response = connection.get("/api/v1/Individuals/#{user_id}/Registrations/#{page}")
+        if response.success?
+          response_log = "[Impexium] Registrations Response (code: #{response.status}):\n#{response.inspect}"
+          @app_event.logs.create(level: 'info', text: response_log)
+          data = to_json(response.body)
+          data[:dataList].map { |item| item[:event][:code] }
+        else
+          []
+        end
       end
 
       def parse_endpoint_base_url(uri)
@@ -133,6 +176,23 @@ module OmniAuth
 
       def to_json(raw)
         MultiJson.load(raw, symbolize_keys: true)
+      end
+
+      def account_slug
+        request.params['slug']
+      end
+
+      def finalize_app_event
+        app_event_data = {
+          user_info: {
+            uid: uid,
+            first_name: info[:first_name],
+            last_name: info[:last_name],
+            email: info[:email]
+          }
+        }
+
+        @app_event.update(raw_data: app_event_data)
       end
     end
   end
