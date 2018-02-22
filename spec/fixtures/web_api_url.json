@@ -1,0 +1,9 @@
+{
+  "uri": "http://public.impexium/api/v1/signup/authenticate",
+  "accessToken": "43b53917-d0fa-45fc-9eb5-3ed79edc4e7e",
+  "appToken": null,
+  "logoUrl": null,
+  "userId": null,
+  "userToken": null,
+  "ssoToken": null
+}

@@ -1,0 +1,359 @@
+{
+  "pageNumber": 1,
+  "dataList": [
+    {
+      "firstName": "Bender",
+      "lastName": "Rodriguez",
+      "middleName": "string",
+      "preferredFirstName": "string",
+      "secondLastName": "string",
+      "prefix": "string",
+      "suffix": "string",
+      "gender": "string",
+      "primaryOrganization": {
+        "contactIds": [
+          "string"
+        ],
+        "parentCompanyId": "string",
+        "id": "string",
+        "customerType": "string",
+        "recordNumber": "string",
+        "title": "string",
+        "name": "string",
+        "addresses": [
+          {
+            "id": "string",
+            "primary": true,
+            "line1": "string",
+            "line2": "string",
+            "line3": "string",
+            "city": "string",
+            "state": "string",
+            "zipcode": "string",
+            "country": "string",
+            "stateAbbreviation": "string",
+            "stateISOCode": "string",
+            "type": "string",
+            "region": "string",
+            "latitude": 0,
+            "longitude": 0,
+            "congressionalDistrict": "string"
+          }
+        ],
+        "email": "string",
+        "imageUri": "string",
+        "twitter": "string",
+        "linkedIn": "string",
+        "emails": [
+          {
+            "primary": true,
+            "address": "string",
+            "type": "string"
+          }
+        ],
+        "phones": [
+          {
+            "id": "string",
+            "primary": true,
+            "number": "string",
+            "extension": "string",
+            "type": 0,
+            "typeName": "string",
+            "country": {
+              "id": "string",
+              "name": "string",
+              "twoLetterIsoCode": "string",
+              "threeLetterIsoCode": "string"
+            }
+          }
+        ],
+        "webSite": "string",
+        "memberships": [
+          {
+            "membershipType": "string",
+            "code": "string",
+            "expireDate": "2018-02-16T15:08:03.429Z",
+            "graceExpireDate": "2018-02-16T15:08:03.429Z",
+            "inheritedMembershipBenefits": true,
+            "renewalUrl": "string",
+            "joinDate": "2018-02-16T15:08:03.429Z"
+          }
+        ],
+        "category": "string",
+        "categories": [
+          {
+            "subCategories": [
+              {
+                "subCategories": [
+                  {}
+                ],
+                "code": "string",
+                "name": "string"
+              }
+            ],
+            "code": "string",
+            "name": "string"
+          }
+        ],
+        "customFields": [
+          {
+            "name": "string",
+            "caption": "string",
+            "value": "string"
+          }
+        ],
+        "showInDirectory": true,
+        "links": [
+          {
+            "type": "string",
+            "url": "string"
+          }
+        ]
+      },
+      "committees": [
+        {
+          "committee": {
+            "name": "string",
+            "code": "string",
+            "id": "string",
+            "parentCommitteeId": "string",
+            "categoryName": "string",
+            "categoryCode": "string",
+            "description": "string",
+            "startDate": "2018-02-16T15:08:03.429Z",
+            "endDate": "2018-02-16T15:08:03.429Z",
+            "showInDirectory": true,
+            "term": {
+              "term": 0,
+              "startDate": "2018-02-16T15:08:03.429Z",
+              "endDate": "2018-02-16T15:08:03.429Z",
+              "showInDirectory": true
+            },
+            "tags": [
+              "string"
+            ]
+          },
+          "position": "string",
+          "positionCode": "string",
+          "code": "string",
+          "startDate": "2018-02-16T15:08:03.429Z",
+          "endDate": "2018-02-16T15:08:03.429Z"
+        }
+      ],
+      "securityRoles": [
+        {
+          "name": "string"
+        }
+      ],
+      "user": {
+        "loginEmail": "string",
+        "mustChangePassword": true,
+        "isApproved": true
+      },
+      "designationData": [
+        {
+          "name": "string"
+        }
+      ],
+      "relationships": [
+        {
+          "relationshipName": "string",
+          "relatedToCustomer": {
+            "id": "string",
+            "customerType": "string",
+            "recordNumber": "string",
+            "title": "string",
+            "name": "string",
+            "addresses": [
+              {
+                "id": "string",
+                "primary": true,
+                "line1": "string",
+                "line2": "string",
+                "line3": "string",
+                "city": "string",
+                "state": "string",
+                "zipcode": "string",
+                "country": "string",
+                "stateAbbreviation": "string",
+                "stateISOCode": "string",
+                "type": "string",
+                "region": "string",
+                "latitude": 0,
+                "longitude": 0,
+                "congressionalDistrict": "string"
+              }
+            ],
+            "email": "string",
+            "imageUri": "string",
+            "twitter": "string",
+            "linkedIn": "string",
+            "emails": [
+              {
+                "primary": true,
+                "address": "string",
+                "type": "string"
+              }
+            ],
+            "phones": [
+              {
+                "id": "string",
+                "primary": true,
+                "number": "string",
+                "extension": "string",
+                "type": 0,
+                "typeName": "string",
+                "country": {
+                  "id": "string",
+                  "name": "string",
+                  "twoLetterIsoCode": "string",
+                  "threeLetterIsoCode": "string"
+                }
+              }
+            ],
+            "webSite": "string",
+            "memberships": [
+              {
+                "membershipType": "string",
+                "code": "string",
+                "expireDate": "2018-02-16T15:08:03.429Z",
+                "graceExpireDate": "2018-02-16T15:08:03.429Z",
+                "inheritedMembershipBenefits": true,
+                "renewalUrl": "string",
+                "joinDate": "2018-02-16T15:08:03.429Z"
+              }
+            ],
+            "category": "string",
+            "categories": [
+              {
+                "subCategories": [
+                  {
+                    "subCategories": [
+                      {}
+                    ],
+                    "code": "string",
+                    "name": "string"
+                  }
+                ],
+                "code": "string",
+                "name": "string"
+              }
+            ],
+            "customFields": [
+              {
+                "name": "string",
+                "caption": "string",
+                "value": "string"
+              }
+            ],
+            "showInDirectory": true,
+            "links": [
+              {
+                "type": "string",
+                "url": "string"
+              }
+            ]
+          },
+          "reciprocalRelationshipName": "string",
+          "isPrimary": true,
+          "startDate": "2018-02-16T15:08:03.429Z",
+          "endDate": "2018-02-16T15:08:03.429Z"
+        }
+      ],
+      "id": "7257fb90-f7a7-0135-b1a9-1801a78efc2d",
+      "customerType": "string",
+      "recordNumber": "string",
+      "title": "string",
+      "name": "string",
+      "addresses": [
+        {
+          "id": "string",
+          "primary": true,
+          "line1": "string",
+          "line2": "string",
+          "line3": "string",
+          "city": "string",
+          "state": "string",
+          "zipcode": "string",
+          "country": "string",
+          "stateAbbreviation": "string",
+          "stateISOCode": "string",
+          "type": "string",
+          "region": "string",
+          "latitude": 0,
+          "longitude": 0,
+          "congressionalDistrict": "string"
+        }
+      ],
+      "email": "bender@planet.express",
+      "imageUri": "string",
+      "twitter": "string",
+      "linkedIn": "string",
+      "emails": [
+        {
+          "primary": true,
+          "address": "string",
+          "type": "string"
+        }
+      ],
+      "phones": [
+        {
+          "id": "string",
+          "primary": true,
+          "number": "string",
+          "extension": "string",
+          "type": 0,
+          "typeName": "string",
+          "country": {
+            "id": "string",
+            "name": "string",
+            "twoLetterIsoCode": "string",
+            "threeLetterIsoCode": "string"
+          }
+        }
+      ],
+      "webSite": "string",
+      "memberships": [
+        {
+          "membershipType": "string",
+          "code": "string",
+          "expireDate": "2018-02-16T15:08:03.429Z",
+          "graceExpireDate": "2018-02-16T15:08:03.429Z",
+          "inheritedMembershipBenefits": true,
+          "renewalUrl": "string",
+          "joinDate": "2018-02-16T15:08:03.429Z"
+        }
+      ],
+      "category": "string",
+      "categories": [
+        {
+          "subCategories": [
+            {
+              "subCategories": [
+                {}
+              ],
+              "code": "string",
+              "name": "string"
+            }
+          ],
+          "code": "string",
+          "name": "string"
+        }
+      ],
+      "customFields": [
+        {
+          "name": "string",
+          "caption": "string",
+          "value": "string"
+        }
+      ],
+      "showInDirectory": true,
+      "links": [
+        {
+          "type": "string",
+          "url": "string"
+        }
+      ]
+    }
+  ]
+}

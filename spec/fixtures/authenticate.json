@@ -1,0 +1,19 @@
+{
+  "uri": "http://inta.impexium:80/api/v1",
+  "accessToken": null,
+  "appToken": "fc7e78c1-fb72-4a9a-a66f-d8c62579c347",
+  "logoUrl": "http://inta.impexium:80/images/eebeec8e-7353-400e-89d5-f5ff841b00c1.img",
+  "userId": "7257fb90-f7a7-0135-b1a9-1801a78efc2d",
+  "userToken": "ca626840-f9eb-0135-b1e6-1801a78efc2d",
+  "ssoToken": "d90d7de0-f9eb-0135-b1e6-1801a78efc2d",
+  "appConfiguration": {
+    "individualLabel": "Individuals",
+    "organizationLabel": "Organizations",
+    "membershipRenewButtonLabel": "Renew",
+    "purchaseButtonText": "Buy",
+    "donationButtonText": "Donate",
+    "featuredProductsHeaderText": "Featured",
+    "allowGoogleLogin": false,
+    "allowLinkedInLogin": false
+  }
+}
