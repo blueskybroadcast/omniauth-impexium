@@ -22,8 +22,7 @@ module OmniAuth
       info { raw_user_info }
 
       def request_phase
-        account = Account.find_by(slug: request.params['origin'].gsub(/\//, ''))
-        redirect "#{options.client_options.authentication_url}?RedirectUrl=#{callback_url}?slug=#{account.slug}"
+        redirect "#{options.client_options.authentication_url}?RedirectUrl=#{callback_url}?slug=#{request.params['origin'].gsub(/\//, '')}"
       end
 
       def callback_phase
@@ -34,7 +33,7 @@ module OmniAuth
         self.sso_token = request.params['sso']
         authenticate
         self.env['omniauth.auth'] = auth_hash
-        self.env['omniauth.origin'] = '/' + request.params['slug']
+        self.env['omniauth.origin'] = '/' + account.slug
         finalize_app_event
         call_app!
       end
@@ -63,7 +62,7 @@ module OmniAuth
           request.body = app_request_body
         end
 
-        app_request_log = "[Impexium] Authenticate App Request:\nPOST #{options.client_options.site}\nRequest body: #{app_request_body}"
+        app_request_log = "[Impexium] Authenticate App Request:\nPOST #{options.client_options.site}\nRequest body: #{app_request_body(true)}"
         @app_event.logs.create(level: 'info', text: app_request_log)
 
         if app_response.success?
@@ -76,7 +75,7 @@ module OmniAuth
             request.headers['AccessToken'] = credentials[:accessToken]
             request.body = auth_request_body
           end
-          auth_request_log = "[Impexium] Authenticate Request:\nPOST #{credentials[:uri]}\nRequest body: #{auth_request_body}"
+          auth_request_log = "[Impexium] Authenticate Request:\nPOST #{credentials[:uri]}\nRequest body: #{auth_request_body(true)}"
           @app_event.logs.create(level: 'info', text: auth_request_log)
 
           if auth_response.success?
@@ -99,19 +98,19 @@ module OmniAuth
         end
       end
 
-      def app_request_body
+      def app_request_body(log = false)
         MultiJson.dump(
-          AppName: options.client_options.client_id,
-          AppKey: options.client_options.secret_key
+          AppName: log ? Provider::SECURITY_MASK : options.client_options.client_id,
+          AppKey: log ? Provider::SECURITY_MASK : options.client_options.secret_key
         )
       end
 
-      def auth_request_body
+      def auth_request_body(log = false)
         MultiJson.dump(
-          AppId: options.client_options.client_id,
-          AppPassword: options.client_options.secret_key,
-          appUserEmail: options.client_options.username,
-          appUserPassword: options.client_options.password
+          AppId: log ? Provider::SECURITY_MASK : options.client_options.client_id,
+          AppPassword: log ? Provider::SECURITY_MASK : options.client_options.secret_key,
+          appUserEmail: log ? Provider::SECURITY_MASK : options.client_options.username,
+          appUserPassword: log ? Provider::SECURITY_MASK : options.client_options.password
         )
       end
 

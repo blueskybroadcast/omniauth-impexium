@@ -21,6 +21,7 @@ RSpec.describe OmniAuth::Strategies::Impexium do
   subject { described_class.new('app_id', 'secret', options) }
 
   before do
+    stub_const('Provider::SECURITY_MASK', '[FILTERED]')
     allow(@app_event).to receive(:logs).and_return(log)
     allow(log).to receive(:create).and_return(true)
   end
