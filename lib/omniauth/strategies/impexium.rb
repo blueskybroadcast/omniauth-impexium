@@ -15,7 +15,8 @@ module OmniAuth
              secret_key: 'MUST_BE_PROVIDED',
              username: 'MUST_BE_PROVIDED',
              password: 'MUST_BE_PROVIDED',
-             sync_event_codes: false
+             sync_event_codes: false,
+             custom_field_keys: []
 
       uid { info[:uid] }
 
@@ -123,13 +124,21 @@ module OmniAuth
         end
       end
 
+      def custom_fields_data(parsed_response)
+        custom_field_keys = options.client_options.custom_field_keys.to_a
+        parsed_response.dig(:customFields).each_with_object({}) do |field, memo|
+          next unless custom_field_keys.include?(field[:name])
+          memo[field[:name].downcase] = field[:value]
+        end
+      end
+
       def raw_user_info
         return @user_info if defined?(@user_info)
 
         request_log = "[Impexium] Profile Request:\nGET #{endpoint_base_url}/api/v1/Individuals/Profile/#{user_id}/1"
         @app_event.logs.create(level: 'info', text: request_log)
 
-        response = connection.get("/api/v1/Individuals/Profile/#{user_id}/1") do |request|
+        response = connection.get("/api/v1/Individuals/Profile/#{user_id}/1?IncludeDetails=true") do |request|
           request.headers['UserToken'] = sso_token
         end
         if response.success?
@@ -144,6 +153,7 @@ module OmniAuth
             email: data[:email]
           }
           @user_info[:access_codes] = access_codes if options.client_options.sync_event_codes
+          @user_info[:custom_fields_data] = custom_fields_data(data)
           @user_info
         else
           @app_event.logs.create(level: 'error', text: response_log)

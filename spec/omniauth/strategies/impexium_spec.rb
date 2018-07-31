@@ -4,7 +4,8 @@ RSpec.describe OmniAuth::Strategies::Impexium do
     {
       client_options: {
         site: 'https://public.impexium/Api/v1/WebApiUrl',
-        sync_event_codes: true
+        sync_event_codes: true,
+        custom_field_keys: ['City', 'Zip']
       }
     }
   end
@@ -15,6 +16,7 @@ RSpec.describe OmniAuth::Strategies::Impexium do
       last_name: 'Rodriguez',
       email: 'bender@planet.express',
       access_codes: ['GNC2016', 'ANNUAL2016'],
+      custom_fields_data: { 'city' => 'New New York', 'zip' => '12345' }
     }
   end
 
@@ -55,6 +57,10 @@ RSpec.describe OmniAuth::Strategies::Impexium do
       describe '#sync_event_codes' do
         it { expect(subject.options.client_options.password).to be_truthy }
       end
+
+      describe '#custom_field_keys' do
+        it { expect(subject.options.client_options.custom_field_keys).to be_eql(['City', 'Zip']) }
+      end
     end
   end
 
@@ -77,6 +83,10 @@ RSpec.describe OmniAuth::Strategies::Impexium do
 
     context 'access_codes' do
       it { expect(subject.info[:access_codes]).to be_eql(['GNC2016', 'ANNUAL2016']) }
+    end
+
+    context 'custom_fields_data' do
+      it { expect(subject.info[:custom_fields_data]).to be_eql({'city' => 'New New York', 'zip' => '12345'}) }
     end
   end
 
@@ -125,7 +135,7 @@ def stub_authentication_requests
 end
 
 def stub_user_info_requests
-  stub_request(:get, 'http://inta.impexium/api/v1/Individuals/Profile/7257fb90-f7a7-0135-b1a9-1801a78efc2d/1')
+  stub_request(:get, 'http://inta.impexium/api/v1/Individuals/Profile/7257fb90-f7a7-0135-b1a9-1801a78efc2d/1?IncludeDetails=true')
     .with(headers: { 'Usertoken' => '7a2667f0-f7a7-0135-b1a9-1801a78efc2d' })
     .to_return(status: 200, body: response_fixture('profile'), headers: {})
   stub_request(:get, "http://inta.impexium/api/v1/Individuals/7257fb90-f7a7-0135-b1a9-1801a78efc2d/Registrations/1")

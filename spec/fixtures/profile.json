@@ -100,6 +100,11 @@
             "name": "string",
             "caption": "string",
             "value": "string"
+          },
+          {
+            "name": "string",
+            "caption": "string",
+            "value": "string"
           }
         ],
         "showInDirectory": true,
@@ -342,9 +347,14 @@
       ],
       "customFields": [
         {
-          "name": "string",
-          "caption": "string",
-          "value": "string"
+          "name": "City",
+          "caption": "Home city",
+          "value": "New New York"
+        },
+        {
+          "name": "Zip",
+          "caption": "Zip code",
+          "value": "12345"
         }
       ],
       "showInDirectory": true,
