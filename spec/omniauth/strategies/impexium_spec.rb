@@ -15,6 +15,7 @@ RSpec.describe OmniAuth::Strategies::Impexium do
       first_name: 'Bender',
       last_name: 'Rodriguez',
       email: 'bender@planet.express',
+      expiration_date: '2018-02-16T15:08:03.429Z',
       access_codes: ['GNC2016', 'ANNUAL2016'],
       custom_fields_data: { 'city' => 'New New York', 'zip' => '12345' }
     }
@@ -88,6 +89,10 @@ RSpec.describe OmniAuth::Strategies::Impexium do
     context 'custom_fields_data' do
       it { expect(subject.info[:custom_fields_data]).to be_eql({'city' => 'New New York', 'zip' => '12345'}) }
     end
+
+    context 'expiration_date' do
+      it { expect(subject.info[:expiration_date]).to be_eql('2018-02-16T15:08:03.429Z') }
+    end
   end
 
   describe '#authenticate' do
@@ -117,7 +122,7 @@ RSpec.describe OmniAuth::Strategies::Impexium do
       stub_user_info_requests
     end
 
-    it { expect(subject.send(:raw_user_info)).to be_eql(info) }
+    it { expect(subject.send(:raw_user_info)).to eq info }
   end
 end
 

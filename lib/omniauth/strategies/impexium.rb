@@ -150,7 +150,8 @@ module OmniAuth
             uid: data[:id],
             first_name: data[:firstName],
             last_name: data[:lastName],
-            email: data[:email]
+            email: data[:email],
+            expiration_date: data[:memberships].empty? ? '' : data[:memberships].first[:expireDate]
           }
           @user_info[:access_codes] = access_codes if options.client_options.sync_event_codes
           @user_info[:custom_fields_data] = custom_fields_data(data)
