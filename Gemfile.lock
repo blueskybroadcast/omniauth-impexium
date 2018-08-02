@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    omniauth-impexium (0.0.1)
+    omniauth-impexium (0.0.2)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
 
@@ -34,7 +34,7 @@ GEM
       oauth2 (~> 1.1)
       omniauth (~> 1.2)
     public_suffix (3.0.2)
-    rack (2.0.4)
+    rack (2.0.5)
     rake (10.5.0)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
