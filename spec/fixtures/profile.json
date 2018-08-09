@@ -320,8 +320,8 @@
       "webSite": "string",
       "memberships": [
         {
-          "membershipType": "string",
-          "code": "string",
+          "membershipType": "Activity type",
+          "code": "ACT",
           "expireDate": "2018-02-16T15:08:03.429Z",
           "graceExpireDate": "2018-02-16T15:08:03.429Z",
           "inheritedMembershipBenefits": true,

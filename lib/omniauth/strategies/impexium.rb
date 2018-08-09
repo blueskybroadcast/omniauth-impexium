@@ -16,6 +16,7 @@ module OmniAuth
              username: 'MUST_BE_PROVIDED',
              password: 'MUST_BE_PROVIDED',
              sync_event_codes: false,
+             membertype_sync: false,
              custom_field_keys: []
 
       uid { info[:uid] }
@@ -150,10 +151,13 @@ module OmniAuth
             uid: data[:id],
             first_name: data[:firstName],
             last_name: data[:lastName],
-            email: data[:email],
-            expiration_date: data[:memberships].empty? ? '' : data[:memberships].first[:expireDate]
+            email: data[:email]
           }
           @user_info[:access_codes] = access_codes if options.client_options.sync_event_codes
+          if options.client_options.membertype_sync && data[:memberships].first
+            @user_info[:member_type] = data[:memberships].first[:code]
+            @user_info[:expiration_date] = data[:memberships].first[:expireDate]
+          end
           @user_info[:custom_fields_data] = custom_fields_data(data)
           @user_info
         else
@@ -161,7 +165,6 @@ module OmniAuth
           @app_event.fail!
           fail!(:invalid_credentials)
         end
-
       end
 
       def registrations_per_page(page)
@@ -169,9 +172,9 @@ module OmniAuth
         @app_event.logs.create(level: 'info', text: request_log)
 
         response = connection.get("/api/v1/Individuals/#{user_id}/Registrations/#{page}")
-        if response.success?
-          response_log = "[Impexium] Registrations Response (code: #{response.status}):\n#{response.inspect}"
-          @app_event.logs.create(level: 'info', text: response_log)
+        response_log = "[Impexium] Registrations Response (code: #{response.status}):\n#{response.inspect}"
+        @app_event.logs.create(level: 'info', text: response_log)
+        if response.success? && response.status == 200
           data = to_json(response.body)
           data[:dataList].map { |item| item[:event][:code] }
         else

@@ -5,6 +5,7 @@ RSpec.describe OmniAuth::Strategies::Impexium do
       client_options: {
         site: 'https://public.impexium/Api/v1/WebApiUrl',
         sync_event_codes: true,
+        membertype_sync: true,
         custom_field_keys: ['City', 'Zip']
       }
     }
@@ -17,6 +18,7 @@ RSpec.describe OmniAuth::Strategies::Impexium do
       email: 'bender@planet.express',
       expiration_date: '2018-02-16T15:08:03.429Z',
       access_codes: ['GNC2016', 'ANNUAL2016'],
+      member_type: 'ACT',
       custom_fields_data: { 'city' => 'New New York', 'zip' => '12345' }
     }
   end
@@ -57,6 +59,10 @@ RSpec.describe OmniAuth::Strategies::Impexium do
 
       describe '#sync_event_codes' do
         it { expect(subject.options.client_options.password).to be_truthy }
+      end
+
+      describe '#membertype_sync' do
+        it { expect(subject.options.client_options.membertype_sync).to be_truthy }
       end
 
       describe '#custom_field_keys' do
