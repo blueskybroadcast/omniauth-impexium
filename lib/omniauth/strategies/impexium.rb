@@ -148,7 +148,7 @@ module OmniAuth
 
           data = to_json(response.body)[:dataList].first
           @user_info = {
-            uid: data[:id],
+            uid: data[:recordNumber],
             first_name: data[:firstName],
             last_name: data[:lastName],
             email: data[:email]
