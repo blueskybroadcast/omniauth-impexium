@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    omniauth-impexium (0.0.3)
+    omniauth-impexium (0.0.4)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
 
@@ -13,17 +13,17 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     diff-lcs (1.3)
-    faraday (0.12.2)
+    faraday (0.15.3)
       multipart-post (>= 1.2, < 3)
     hashdiff (0.3.7)
     hashie (3.5.7)
-    jwt (1.5.6)
+    jwt (2.1.0)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
-    oauth2 (1.4.0)
-      faraday (>= 0.8, < 0.13)
-      jwt (~> 1.0)
+    oauth2 (1.4.1)
+      faraday (>= 0.8, < 0.16.0)
+      jwt (>= 1.0, < 3.0)
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
@@ -34,7 +34,7 @@ GEM
       oauth2 (~> 1.1)
       omniauth (~> 1.2)
     public_suffix (3.0.2)
-    rack (2.0.5)
+    rack (2.0.6)
     rake (10.5.0)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
@@ -66,4 +66,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
