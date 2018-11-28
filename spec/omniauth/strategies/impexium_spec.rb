@@ -12,7 +12,7 @@ RSpec.describe OmniAuth::Strategies::Impexium do
   end
   let(:info) do
     {
-      uid: '7257fb90-f7a7-0135-b1a9-1801a78efc2d',
+      uid: '666',
       first_name: 'Bender',
       last_name: 'Rodriguez',
       email: 'bender@planet.express',
@@ -124,6 +124,7 @@ RSpec.describe OmniAuth::Strategies::Impexium do
     before do
       subject.user_id = '7257fb90-f7a7-0135-b1a9-1801a78efc2d'
       subject.sso_token = '7a2667f0-f7a7-0135-b1a9-1801a78efc2d'
+      subject.app_token = 'fc7e78c1-fb72-4a9a-a66f-d8c62579c347'
       subject.endpoint_base_url = 'http://inta.impexium:80'
       stub_user_info_requests
     end
@@ -147,7 +148,7 @@ end
 
 def stub_user_info_requests
   stub_request(:get, 'http://inta.impexium/api/v1/Individuals/Profile/7257fb90-f7a7-0135-b1a9-1801a78efc2d/1?IncludeDetails=true')
-    .with(headers: { 'Usertoken' => '7a2667f0-f7a7-0135-b1a9-1801a78efc2d' })
+    .with(headers: { 'UserToken' => '7a2667f0-f7a7-0135-b1a9-1801a78efc2d' })
     .to_return(status: 200, body: response_fixture('profile'), headers: {})
   stub_request(:get, "http://inta.impexium/api/v1/Individuals/7257fb90-f7a7-0135-b1a9-1801a78efc2d/Registrations/1")
     .to_return(status: 200, body: response_fixture('registrations'), headers: {})
